@@ -5,12 +5,18 @@ const axios = require('axios')
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
-const {getDogs, createDog} = require('./controllers')
+const {getDogs, createDog, getDogByName, getTemperaments, getDogById} = require('./controllers')
 const router = Router();
 
 router.get('/', getDogs)
 
-router.post('/', createDog)
+router.post('/dog', createDog)
+
+router.get('/dogs', getDogByName)
+
+router.get('/temperament', getTemperaments)
+
+router.get('/dogs/:id', getDogById)
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
