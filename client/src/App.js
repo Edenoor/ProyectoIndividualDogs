@@ -1,10 +1,18 @@
 import './App.css';
+import { Provider } from 'react-redux';
+import {BrowserRouter as Router} from 'react-router-dom'
+import store from './redux/store'
+import Routes from './routes';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Proyecto Perritos</h1>
-    </div>
+    <Provider store={store}>
+
+    <Router>
+      <Routes />
+    </Router>
+
+    </Provider>
   );
 }
 
