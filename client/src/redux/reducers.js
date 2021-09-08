@@ -1,7 +1,8 @@
-import{GET_ALL_DOGS, GET_DOG, CREATE_DOG, UNMOUNT_ALL_DOGS} from './actions'
+import{GET_ALL_DOGS, GET_DOG, CREATE_DOG, UNMOUNT_ALL_DOGS, GET_ALL_TEMPERAMENTS, GET_DOG_BY_NAME} from './actions'
 
 const initialState = {
     dogs: [],
+    temperaments: [],
     dog: {}
 }
 
@@ -17,6 +18,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 dog: action.payload
             };
+            case GET_DOG_BY_NAME:
+                return{
+                    ...state,
+                    dog: action.payload
+                };
             case CREATE_DOG:
                 return{
                     ...state,
@@ -30,7 +36,12 @@ const rootReducer = (state = initialState, action) => {
                     return{
                         ...state,
                         dogs: []
-                    }
+                    };
+                case GET_ALL_TEMPERAMENTS:
+                    return {
+                        ...state,
+                        temperaments: action.payload,
+                    };
             default:
                 return state
     }

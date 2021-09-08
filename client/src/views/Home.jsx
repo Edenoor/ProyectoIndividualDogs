@@ -1,5 +1,6 @@
 import React from "react";
-// import styles from './Home.module.css'
+
+
 import Dogs from '../components/Dogs'
 
 const Home = () => {

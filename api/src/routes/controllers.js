@@ -4,10 +4,47 @@ require('dotenv').config();
 const { conn } = require('../db')
 const {API_KEY} = process.env;
 const { Dog, Temperament } = require('../db');
-const { v4: uuidv4, v4, version } = require('uuid')
+const { v4: uuidv4, v4, version } = require('uuid');
+const e = require('express');
+const {Op} = require('sequelize')
 
 const getDogs = async function (req, res, next) {
+    const {name} = req.query
     try{
+        // if(name) {
+        //     const dogs = await Dog.findAll({
+        //         where: {
+        //             name: {
+        //                 [Op.iLike]: `%${name}%` // % = si tiene algo en el principio o al final no lo tenga en cuenta. si name esta en cualquier lugar del string te lo trae
+        //             }
+        //         }
+        //     })
+        //     let apiDogs = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}${name}`)).data
+        //    return res.status(201).json([...dogs, ...apiDogs])
+        // let apiDogs = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
+        // apiDogs = apiDogs.map(({id, name, height, weight, temperament, image, life_span}) => ({
+        //     id,
+        //     name,
+        //     height: height.metric,
+        //     weight: weight.metric, 
+        //     temperament, 
+        //     image: image.url,
+        //     life_span
+        // }))
+        // const localDogs = await Dog.findAll({
+        //     include: [{
+        //         model: Temperament,
+        //         attributes: ['id', 'name'],
+        //     },],
+        //     attributes: ['id', 'name', 'height', 'weight', 'image', 'life_span']
+        // })
+        // const allDogs = [...localDogs, ...apiDogs]
+ 
+        //     const dogs = allDogs.filter(e => e.name.includes(name))
+        // if(dogs.length > 0) {
+        //     return res.status(200).json(dogs)
+        // }
+        // }
         let apiDogs = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
         apiDogs = apiDogs.map(({id, name, height, weight, temperament, image, life_span}) => ({
             id,
@@ -53,11 +90,11 @@ const getDogByName = async function (req, res) {
         })
         const allDogs = [...localDogs, ...apiDogs]
  
-            const dogs = allDogs.filter(e => e.name.includes(name))
+            const dogs = await allDogs.filter(e => e.name.includes(name))
         if(dogs.length > 0) {
             return res.status(200).json(dogs)
         }
-        return res.status(400).json({mesagge: 'Not Found'})
+        res.status(400).json({mesagge: 'Not Found'})
     }catch(e){
         next({message: 'Not Found', error: e})
     }
@@ -140,10 +177,24 @@ const getTemperaments = async function (req, res, next) {
     }
 }
 
+const getDbTemperaments = async function (req, res, next) {
+    try{
+
+        let allTemperaments = await Temperament.findAll()
+        allTemperaments = await allTemperaments.map(({id, name}) => ({id, name}))
+        res.status(200).json(allTemperaments)
+        console.log(allTemperaments)
+        return allTemperaments
+    }catch(e) {
+        next(e)
+    }
+}
+
 module.exports = {
     getDogs,
     createDog,
     getDogByName,
     getTemperaments,
-    getDogById
+    getDogById,
+    getDbTemperaments
 }
