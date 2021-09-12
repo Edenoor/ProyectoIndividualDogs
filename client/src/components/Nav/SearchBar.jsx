@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import styles from './SearchBar.module.css'
 
 
 const SearchBar = () => {
@@ -12,9 +13,9 @@ const handleOnClick = () => {
 }
 
     return(
-        <div > 
-           <input onChange={({target: {value}}) => setName(value)} value={name} type="text" placeholder="Search..." />
-           <button type='submit' onClick={handleOnClick}>Search</button>
+        <div className={styles.buscarcaja} > 
+           <input className={styles.buscartxt} onChange={({target: {value}}) => setName(value)} value={name} type="text" placeholder="Search..." />
+           <button className={styles.buscarbtn} type='submit' onClick={handleOnClick}><i class="fas fa-search"></i></button>
         </div>
     );
 };

@@ -1,0 +1,61 @@
+.buscarcaja {
+    position: relative;
+    margin-top: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: transparent;
+    height: 40px;
+    border-radius: 40px;
+    padding: 10px;
+    display: flex;
+   }
+   
+   .buscarcaja:hover > .buscartxt {
+    position: absolute;
+    justify-content: right;
+    width: 240px;
+    padding: 0 6px;
+    background-color: white;
+    border-radius: 20px;
+   }
+   
+   .buscarcaja:hover > .buscarbtn {
+    background: white;
+    color: black;
+   }
+   
+   .buscarbtn {
+    color: #e84118;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #2f3640;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    color: white;
+    cursor: pointer;
+    border-style: none;
+    margin-left: 5px;
+   }
+   
+   .buscarbtn > i {
+    font-size: 20px;
+   }
+   
+   .buscartxt {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0;
+    color: black;
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 40px;
+    width: 0px;
+    font-weight: bold;
+   }

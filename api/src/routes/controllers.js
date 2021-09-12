@@ -68,8 +68,9 @@ const getDogs = async function (req, res, next) {
     }
 }
 
-const getDogByName = async function (req, res) {
+const getDogByName = async function (req, res, next) {
     const {name} = req.query
+    const {temperaments} = req.query
     try{
         let apiDogs = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
         apiDogs = apiDogs.map(({id, name, height, weight, temperament, image, life_span}) => ({
@@ -82,15 +83,35 @@ const getDogByName = async function (req, res) {
             life_span
         }))
         const localDogs = await Dog.findAll({
+            // where: {
+            //     name: {
+            //         [Op.iLike] : `%${name}%`
+            //     }, temperaments,
+            // },
             include: [{
                 model: Temperament,
                 attributes: ['id', 'name'],
             },],
             attributes: ['id', 'name', 'height', 'weight', 'image', 'life_span']
+            
         })
         const allDogs = [...localDogs, ...apiDogs]
- 
-            const dogs = await allDogs.filter(e => e.name.includes(name))
+        let dogs = allDogs
+        if(name && temperaments) {
+            console.log('HEREEEE', name, temperaments)
+            dogs = await dogs.filter(e => e.name.toLowerCase().includes(name.toLowerCase()) && e.temperament.toLowerCase().includes(temperaments.toLowerCase()))
+            if(dogs.length > 0) {
+                return res.status(200).json(dogs)
+            }
+        }
+            if(name) {
+                console.log('HEREEEE', name, temperaments)
+                dogs = await dogs.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
+            }
+                if(temperaments) {
+                    console.log('HEREEEE', name, temperaments)
+                    dogs = await dogs.filter(e => e.temperament.toLowerCase().includes(temperaments.toLowerCase()))   
+            }
         if(dogs.length > 0) {
             return res.status(200).json(dogs)
         }

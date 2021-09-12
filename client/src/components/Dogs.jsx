@@ -5,6 +5,7 @@ import { getAllDogs, unmountAllDogs } from "../redux/actions";
 // import styles from './Home.module.css'
 import DogCard from './DogCard'
 import Pagination from "./Pagination";
+import styles from './Dog.module.css'
 
 
 const Dogs = () => {
@@ -12,7 +13,7 @@ const Dogs = () => {
     const dispatch = useDispatch()
     const { dogs } = useSelector(state => state)
     const name = query.get('name')
-    const from = parseInt(query.get('from'))
+    const from = parseInt(query.get('from')) || 0
 
     useEffect(() => {
         name ? dispatch(getAllDogs(name)) : dispatch(getAllDogs())
@@ -22,15 +23,17 @@ const Dogs = () => {
     }, [dispatch, name])
 
     const dogComponent = () => (
-        <div >
+        <div className={styles.cnt}>
             {
             dogs && (
-                <div>
-                    <Pagination dogs={dogs}/>
+                <div className={styles.cont}>
+                    <h4 className={styles.pag}><Pagination dogs={dogs}/></h4>
+                    <div className={styles.one}>
                     {
                         dogs.slice(from, from + 8).map(dog => <DogCard key={dog.id} dog={dog}/>)
                     }
-                    <Pagination dogs={dogs}/>
+                    </div>
+                    <h4><Pagination dogs={dogs}/></h4>
                 </div>
             )
             
