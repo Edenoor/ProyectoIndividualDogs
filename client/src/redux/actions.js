@@ -46,6 +46,7 @@ export const getOneDog = id => dispatch => {
 // }
 
 export const createDog = values => dispatch => {
+    console.log(values)
     try{
         return axios.post('/dog', {...values})
         .then(res => dispatch ({type: CREATE_DOG, payload: res.data}))

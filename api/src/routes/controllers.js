@@ -67,7 +67,7 @@ const getDogs = async function (req, res, next) {
             name,
             height,
             weight,
-            temperament: temperaments[0].name,
+            temperament: temperaments.map(e => e.name).join(', '),
             image,
             life_span
         }))
@@ -92,19 +92,22 @@ const getDogByName = async function (req, res, next) {
             image: image.url,
             life_span
         }))
-        const localDogs = await Dog.findAll({
-            // where: {
-            //     name: {
-            //         [Op.iLike] : `%${name}%`
-            //     }, temperaments,
-            // },
+        let localDogs = await Dog.findAll({
             include: [{
                 model: Temperament,
-                attributes: ['id', 'name'],
+                attributes: ['name'],
             },],
             attributes: ['id', 'name', 'height', 'weight', 'image', 'life_span']
-            
         })
+        localDogs = await  localDogs.map(({id, name, height, weight, temperaments, image, life_span}) => ({
+            id,
+            name,
+            height,
+            weight,
+            temperament: temperaments.map(e => e.name).join(', '),
+            image,
+            life_span
+        }))
         const allDogs = [...localDogs, ...apiDogs]
         let dogs = allDogs
         if(name && temperaments) {
@@ -145,6 +148,7 @@ const createDog = async function (req, res, next) {
             life_span
         });
         await newDog.setTemperaments(temperaments)
+        console.log('aholaaa:',temperaments)
         
         return res.status(201).json(newDog)
     }catch(e){
@@ -157,10 +161,23 @@ const getDogById = async function (req, res, next) {
     const validateId = id.includes('-')
     if(validateId) {
         try{
-            let DogDb = await Dog.findByPk(id, {
-                include: Temperament
-                
+            let localDogs = await Dog.findAll({
+                include: [{
+                    model: Temperament,
+                    attributes: ['name'],
+                },],
+                attributes: ['id', 'name', 'height', 'weight', 'image', 'life_span']
             })
+            localDogs = await  localDogs.map(({id, name, height, weight, temperaments, image, life_span}) => ({
+                id,
+                name,
+                height,
+                weight,
+                temperament: temperaments.map(e => e.name).join(', '),
+                image,
+                life_span
+            }))
+            let DogDb = await localDogs.find(e => e.id === id)
             res.json(DogDb)
         }catch(e){
             next(e)
@@ -208,8 +225,7 @@ const getDogById = async function (req, res, next) {
         //     console.log(id)
         //    return res.status(200).json(allDogsId)
 
-        }
-    
+}
 
 const getTemperaments = async function (req, res, next) {
     try{

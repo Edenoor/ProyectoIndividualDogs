@@ -16,15 +16,22 @@ export const CreateDog =  ({ dog }) => {
         temperaments: []
     })
 
+     const [input, setInput] = useState({
+         temperament: []
+     }) 
+
     const handleOnChange = ({target : {name, value}}) => setValues({
         ...values,
         [name]: value
     })
 
-    const handleOnCharge = ({target : {temperaments, value}}) => setValues({
-        ...values,
-        [temperaments]: value
-    })
+    function handleSelect(e) {
+        setValues({
+          ...values,
+          temperaments: [...values.temperaments, e.target.value],
+        });
+        console.log(e.target.value)
+      }
     
     const handleOnSubmit = e => {
         e.preventDefault()
@@ -41,13 +48,6 @@ export const CreateDog =  ({ dog }) => {
         alert('Dog created successfully')
     };
 
-    // const temperamentDispatcher =  async function () {
-        
-    //    let todos = await dispatch(getAllTemperaments())
-    //    todos = todos.payload;
-    //    return todos;
-    // }
-    //temperamentDispatcher()
 
     return(
         <form className={Styles.cnt} onSubmit={handleOnSubmit}>
@@ -63,14 +63,23 @@ export const CreateDog =  ({ dog }) => {
             <input name='life_span' onChange={handleOnChange} type="text" value={values.life_span} placeholder="10 - 12 years" />
             <label htmlFor="">Image</label>
             <input name='image' onChange={handleOnChange} type="text" value={values.image} placeholder="Paste Url" />
-            <label for="temperaments">Temperaments</label>
-            <select className   type="checkbox" name="temperaments"  id="temperaments" size="1"  onChange={handleOnChange} value={values.temperaments}>
-                {
-                 temperaments.map(t => (
-                        <option type='checkbox' key={t.id} value={t.id}>{t.name}</option>
-                        ))
-                    }
+            <div>
+
+            <div>
+            <select onChange={(e) => handleSelect(e)} value={input.temperament[input.temperament.length - 1]} className required>
+              <option value="">Temperaments:</option>
+              {temperaments.map((e) => (<option key={e.id} value={e.id}> {e.name} </option>
+              ))}
             </select>
+            <div>
+              {[
+                values.temperaments.map(
+                  (i) => temperaments.find((ob) => ob.id === i)?.name + ", "
+                ),
+              ]}
+            </div>
+          </div>
+                    </div>
             <button className={Styles.button} id='submit'>Crear</button>
             </div>
         </form>
