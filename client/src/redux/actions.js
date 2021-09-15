@@ -28,6 +28,7 @@ export const getAllDogs = name => dispatch => {
 
 export const getOneDog = id => dispatch => {
     try{
+        console.log(typeof id)
         return axios.get(`/dogs/${id}`)
         .then(res => dispatch ({type: GET_DOG, payload: res.data}))
     }catch(e) {

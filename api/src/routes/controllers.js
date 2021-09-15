@@ -154,9 +154,21 @@ const createDog = async function (req, res, next) {
 
 const getDogById = async function (req, res, next) {
     const {id} = req.params
-    try{
-    if(id) {
-            let apiDogs = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
+    const validateId = id.includes('-')
+    if(validateId) {
+        try{
+            let DogDb = await Dog.findByPk(id, {
+                include: Temperament
+                
+            })
+            res.json(DogDb)
+        }catch(e){
+            next(e)
+         }
+     } else {
+
+         try{
+             let apiDogs = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
             apiDogs = apiDogs.map(({id, name, height, weight, temperament, image, life_span}) => ({
                 id,
                 name,
@@ -166,22 +178,38 @@ const getDogById = async function (req, res, next) {
                 image: image.url,
                 life_span
             }))
-            const localDogs = await Dog.findAll({
-                include: [{
-                    model: Temperament,
-                    attributes: ['id', 'name'],
-                },],
-                attributes: ['id', 'name', 'height', 'weight', 'image', 'life_span']
-            })
-            const allDogs = [...localDogs, ...apiDogs]
-            const allDogsId = await allDogs.find((e) => e.id===parseInt(id))
-            console.log(id)
-           return res.status(200).json(allDogsId)
+            apiDogs = await apiDogs.find((e) => e.id===parseInt(id))
+
+            res.json(apiDogs)
+         } catch(e){
+            next(e)
+         }
+     }
+
+        //     let apiDogs = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
+        //     apiDogs = apiDogs.map(({id, name, height, weight, temperament, image, life_span}) => ({
+        //         id,
+        //         name,
+        //         height: height.metric,
+        //         weight: weight.metric, 
+        //         temperament, 
+        //         image: image.url,
+        //         life_span
+        //     }))
+        //     const localDogs = await Dog.findAll({
+        //         include: [{
+        //             model: Temperament,
+        //             attributes: ['id', 'name'],
+        //         },],
+        //         attributes: ['id', 'name', 'height', 'weight', 'image', 'life_span']
+        //     })
+        //     const allDogs = [...localDogs, ...apiDogs]
+        //     const allDogsId = await allDogs.find((e) => e.id===parseInt(id))
+        //     console.log(id)
+        //    return res.status(200).json(allDogsId)
+
         }
-    }catch(e){
-       next(e)
-    }
-}
+    
 
 const getTemperaments = async function (req, res, next) {
     try{

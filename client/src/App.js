@@ -1,18 +1,24 @@
 import './App.css';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import {BrowserRouter as Router} from 'react-router-dom'
 import store from './redux/store'
 import Routes from './routes';
+import { useEffect } from 'react';
+import {getAllTemperaments} from './redux/actions'
 
 function App() {
+  const dispatch = useDispatch()
+  useEffect(() =>{
+    dispatch(getAllTemperaments())
+  }, [dispatch])
   return (
-    <Provider store={store}>
+  
 
     <Router>
       <Routes />
     </Router>
 
-    </Provider>
+
   );
 }
 
