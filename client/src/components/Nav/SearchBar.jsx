@@ -6,6 +6,7 @@ import styles from './SearchBar.module.css'
 const SearchBar = () => {
     const history = useHistory()
     const [name, setName] = useState('')
+    
 
 const handleOnClick = () => {
     setName('');

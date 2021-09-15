@@ -1,4 +1,4 @@
-import{GET_ALL_DOGS, GET_DOG, CREATE_DOG, UNMOUNT_ALL_DOGS, GET_ALL_TEMPERAMENTS, GET_DOG_BY_NAME, ORDER_FILTER, FILTER_BY_TEMPERAMENT, FILTER_CREATED, ORDER_BY_NAME} from './actions'
+import{GET_ALL_DOGS, GET_DOG, CREATE_DOG, UNMOUNT_ALL_DOGS, GET_ALL_TEMPERAMENTS, GET_DOG_BY_NAME, FILTER_BY_TEMPERAMENT, FILTER_CREATED, ORDER_BY_NAME, ORDER_BY_WEIGHT} from './actions'
 
 const initialState = {
     dogs: [],
@@ -43,6 +43,7 @@ const rootReducer = (state = initialState, action) => {
                     return {
                         ...state,
                         temperaments: action.payload,
+                        
                     };
                 case FILTER_BY_TEMPERAMENT :
                     let allDogs = state.allDogs
@@ -54,14 +55,24 @@ const rootReducer = (state = initialState, action) => {
                         dogs: temperamentFiltered
                     };
                 case FILTER_CREATED :
+                    let createdFilter = [];
+                    switch(action.payload) {
+                        case 'created':
+                            createdFilter = state.allDogs.filter(el => el.id.length > 10);
+                        break;
+                        case 'api':
+                            createdFilter = state.allDogs.filter(el => !isNaN(el.id));
+                        break;
+                        default :
+                            createdFilter = state.allDogs;
+                    }
 
-                const createdFilter = action.payload === 'created' ? state.allDogs.filter(el => el.id.length > 10) : state.allDogs.filter(el => typeof el.id == Number)
                 return {
                     ...state,
-                    dogs: action.payload === 'All' ? state.allDogs : createdFilter
+                    dogs: createdFilter
                 };
                 case ORDER_BY_NAME : 
-                let sortedArr = action.payload === 'asc' ? 
+                let sortedArr = (action.payload === 'asc') ? 
                     state.dogs.sort(function (a, b) {
                         if (a.name > b.name) {
                             return 1;
@@ -69,7 +80,7 @@ const rootReducer = (state = initialState, action) => {
                         if(b.name > a.name) {
                             return -1
                         }
-                        return 0
+                        return 0;
                     }) :
                     state.dogs.sort(function(a, b) {
                         if (a.name > b.name) {
@@ -78,15 +89,31 @@ const rootReducer = (state = initialState, action) => {
                         if (b.name > a.name) {
                             return 1
                         }
+                        return 0;
+
+                    });
                     return {
                         ...state,
                         dogs: sortedArr
 
                     }
+                    case ORDER_BY_WEIGHT : 
+                    let arr = (action.payload === 'heavy') ? 
+                    state.dogs.sort(function(a, b){
+                        if(Number(a.weight.split('-')[0]) > (Number(b.weight.split('-')[0] ))) return -1;
+                        if(Number(b.weight.split('-')[0]) > (Number(a.weight.split('-')[0] ))) return 1;
+                        return 0
+                    }) :
+                    state.dogs.sort(function(a, b){
+                        if(Number(a.weight.split('-')[0]) > (Number(b.weight.split('-')[0] ))) return 1;
+                        if(Number(b.weight.split('-')[0]) > (Number(a.weight.split('-')[0] ))) return -1;
+                        return 0
+                    }) 
+                    return {
+                        ...state,
+                        dogs: arr
 
-                    })
-
-
+                    }
             default:
                 return state
     }

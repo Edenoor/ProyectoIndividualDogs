@@ -8,11 +8,9 @@
     height: 40px;
     border-radius: 40px;
     padding: 10px;
-    display: flex;
    }
    
    .buscarcaja:hover > .buscartxt {
-    position: absolute;
     justify-content: right;
     width: 240px;
     padding: 0 6px;

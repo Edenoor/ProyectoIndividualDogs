@@ -23,8 +23,8 @@ const history = useHistory();
             <button className={styles.btn} onClick={() => history.push('/main/create_dog')}>Create Dog</button>
                 </div>
             </div>
-        </div>
             </div>
+        </div>
     );
 };
 export default Nav;

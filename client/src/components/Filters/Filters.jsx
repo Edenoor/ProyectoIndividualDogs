@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { filterDogsByTemperament, filterCreated, orderByName } from '../../redux/actions'
+import { filterDogsByTemperament, filterCreated, orderByName,orderByWeight, getAllTemperaments } from '../../redux/actions'
 import { useLocation, useHistory } from 'react-router-dom'
 import Styles from './Filters.module.css'
 
@@ -10,21 +10,22 @@ const Filters = () => {
     const name = query.get('name') || ''
     const history = useHistory()
     const dispatch = useDispatch()
+    // const {temperaments} = useLocation(state => state)
+    
     const [values, setValues] = useState({
         temperaments: '',
     })
+    
     const [order, setOrder] = useState('')
-    const [currentPage, setCurrentPage] = useState(1)
 
-    const handleOnChange = ({target: {name, value}}) => setValues({
-        ...values,
-        [name]: value   
-    }) 
+    // const handleOnChange = ({target: {name, value}}) => setValues({
+    //     ...values,
+    //     [name]: value   
+    // }) 
 
-    const handleOnClick = () => {
-        console.table({...values, name, order})
-        dispatch(filterDogsByTemperament({...values, name, order}));
-    }
+    // const handleOnClick = () => {
+    //     dispatch(filterDogsByTemperament({...values, name, order}));
+    // }
 
     const handleFilterTemperament = (e) => {
     dispatch(filterDogsByTemperament(e.target.value))
@@ -36,44 +37,58 @@ const Filters = () => {
     const handleSort = (e) => {
         e.preventDefault();
         dispatch(orderByName(e.target.value))
-        // setCurrentPage(1);
-        // setOrder(`${e.target.value}`)
     }
 
+    const handleWeight = (e) => {
+        e.preventDefault();
+        dispatch(orderByWeight(e.target.value))
+    }
+    function refreshPage() {
+        window.location.reload(false);
+      }
     return(
         <div className={Styles.container}>
-            <div className={Styles.container} >
+            <div className={Styles.containers} >
+                <div>
+
                     <label htmlFor="">Temperament</label>
                     <select value={values.temperaments} onChange={handleFilterTemperament} name="temperaments" id="temperaments">
                         <option value="">-</option>
                         {
-                    [{"id":"64534fe5-6a14-45b1-9b8a-0ccd8dfdc1dd","name":"Active"},{"id":"e0d43519-68b5-4b60-b095-714008d84555","name":"Adaptable"},{"id":"0fa3a72b-e5e5-418f-b70d-fdcc7d7df110","name":"Adventurous"},{"id":"e230c26b-c99c-4b25-95b6-177d07d88097","name":"Affectionate"},{"id":"901354e3-2778-475c-b5b3-d74a594ed5b6","name":"Aggressive"},{"id":"0d31a859-c8cf-4cf2-8a7d-e5ec2798444f","name":"Amiable"},{"id":"ef7b7e1d-514c-4486-b04d-7af2e9e89851","name":"Agile"},{"id":"23a35026-6a90-4e69-b715-ea4a3a715100","name":"Aloof"},{"id":"28103d48-7942-447b-8332-085c833aa68a","name":"Alert"},{"id":"80f2cdf3-6567-48ab-8c3b-7c31f8b6d5c8","name":"Athletic"},{"id":"a74a3082-8874-4b56-8f9d-8b7d152ca925","name":"Attentive"},{"id":"d73f4783-d55c-4795-8864-ec5f8471e6d5","name":"Assertive"},{"id":"3460cdf5-3077-492b-9b4f-e60c27d971a1","name":"Benevolent"},{"id":"d1b5f6db-d783-4b1f-9125-cea7a8dccffc","name":"Boisterous"},{"id":"4b05277d-c97c-42ee-9b7c-cb9acd9bc240","name":"Bold"},{"id":"54321d50-1007-493a-9fa4-ab8472326be7","name":"Bossy"},{"id":"0404a170-1898-4cbb-b240-5f2b00d2c5dd","name":"Brave"},{"id":"06326913-b012-4a6b-98a5-08092c241c94","name":"Bright"},{"id":"93c82c10-d0bf-43da-bae6-9b03021fbe2b","name":"Bubbly"},{"id":"051b7451-8e45-444e-b394-915a28350a87","name":"Calm"},{"id":"a17d23a1-d406-4b2c-b8de-3b1a2a0ccf82","name":"Cat-like"},{"id":"1eae807c-5c13-4b70-a673-b1b4153bdbad","name":"Cautious"},{"id":"cc500266-92f0-498d-b616-52de6b7c93f1","name":"Charming"},{"id":"ca52e56e-d789-4d8c-87a5-dd31133fbce3","name":"Cheerful"},{"id":"4e96e97a-6e2e-4711-a9d0-58f0b154ff0e","name":"Clever"},{"id":"aec6afa5-fed7-41c6-8ee8-73571b3a8e11","name":"Clownish"},{"id":"e67c8363-0138-4dc1-bae0-0a889cfec9ec","name":"Confident"},{"id":"cc3e3adf-31f3-45ec-b882-131a29403a0e","name":"Companionable"},{"id":"21bae6a5-2806-4502-94c7-dbaed60d6568","name":"Composed"},{"id":"0f0dc000-3007-4738-bbe6-5ac90ee531e1","name":"Cooperative"},{"id":"c9defd3c-e0ac-4578-a638-f49e9d5bcbaf","name":"Courageous"},{"id":"dc3b3f1a-7834-40fe-9edb-d7a3ace55b4a","name":"Cunning"},{"id":"98217742-80d1-4d5e-bef1-6153658addf0","name":"Curious"},{"id":"1dd1378b-84e8-411e-bc3f-b0942b9331ff","name":"Determined"},{"id":"616ee8b6-0ea9-4731-b1f6-f3525c2a6ce6","name":"Devoted"},{"id":"61f48144-0a47-4d80-bee8-aa08a99c7125","name":"Dignified"},{"id":"7edbc236-f210-4c4d-a74f-b451f11526d6","name":"Diligent"},{"id":"d3495a49-4f88-4c5c-ad30-f1c1de00cc98","name":"Docile"},{"id":"5ff0feaa-5e03-45a4-84a0-5dd43d4ef9f1","name":"Dominant"},{"id":"e53789a2-bab8-43ba-8559-1dbf2c9e2c5c","name":"Dutiful"},{"id":"bbf6b44f-d613-4025-bac5-766a27bb911a","name":"Eager"},{"id":"67a0312e-8fee-4b41-b881-64976f1a647c","name":"Easygoing"},{"id":"df9beb93-8eab-40d2-8bda-cbfa6e5f79dd","name":"Energetic"},{"id":"b4fdd5a5-e89d-457c-9ece-8d8b669c3862","name":"Even Tempered"},{"id":"bd454e73-2941-4043-a0a9-4a281ad754e8","name":"Excitable"},{"id":"5824a9e7-4959-4963-87f5-6000385623da","name":"Extroverted"},{"id":"d0be0919-dab2-4943-aa95-6ef34dcb33c3","name":"Faithful"},{"id":"04b27886-a3ac-4f7d-8c01-c4392d50402b","name":"Familial"},{"id":"98c0fbba-1ce7-42f5-8f32-93be6f3a677a","name":"Fast"},{"id":"0c83e1e9-bab7-4db3-b257-069ed2e7549f","name":"Fearless"},{"id":"ac8266bf-1e35-45c5-96ac-b6a87c34542f","name":"Feisty"},{"id":"e388d1e9-b731-435d-b28c-c7df65c234ae","name":"Fierce"},{"id":"a3af53f8-64c4-473b-936d-74a292c712d3","name":"Friendly"},{"id":"4ff47567-d5cf-4518-983f-94903e889090","name":"Fun-loving"},{"id":"deb7288b-7889-4e03-990e-2eb77c86ef0d","name":"Gay"},{"id":"ac31ce64-1690-4d74-806a-9cbe3d8d0be8","name":"Generous"},{"id":"0eb49388-2174-4d03-911d-a82c55a7291f","name":"Gentle"},{"id":"a116ae6a-fed6-42c7-ba68-40c8a156c02f","name":"Good-natured"},{"id":"82af7961-01db-4f22-9cd4-cb62570eb2d9","name":"Good-tempered"},{"id":"726cc6b7-55e7-4964-a85d-71cc54c94e22","name":"Great-hearted"},{"id":"8fdabfa1-1d1a-436d-9b77-66364ecc6c9c","name":"Happy"},{"id":"be4efeee-3c70-4c59-b069-0737c5e1359a","name":"Hard-working"},{"id":"01e11d46-f045-40eb-8e89-25333f43dfa3","name":"Hardworking"},{"id":"df629cdd-cfc7-4cd2-af69-b5fc3a1826f9","name":"Hardy"},{"id":"bd2237ff-ccf2-407a-93b2-956df9b96a37","name":"Independent"},{"id":"96fd487c-3904-49e2-adc5-5fce77894d96","name":"Inquisitive"},{"id":"902f7d1b-44bc-4e9d-a2cd-eac340423f8f","name":"Intelligent"},{"id":"71da9985-e3b7-42ed-871a-560ec1e76faa","name":"Joyful"},{"id":"4a15eb2f-7fcd-4c7f-809a-10a5f11f07f5","name":"Keen"},{"id":"960c8ffb-0776-4770-b738-f13a3d9b5888","name":"Kind"},{"id":"668a598d-5e15-47ae-8b99-651203af04f0","name":"Lively"},{"id":"31c2b31d-58e9-491b-8c47-9a86b193d626","name":"Lovable"},{"id":"b0a471af-c753-4ed4-9f45-08d29493ea94","name":"Loving"},{"id":"6a65c858-fcaf-4015-b604-f63f18bcf960","name":"Loyal"},{"id":"f3fbcc8b-c157-4fe5-9029-db875a118e67","name":"Merry"},{"id":"f069f2c0-34f5-483e-9881-ffc256004ea1","name":"Mischievous"},{"id":"c4b8cef1-96e5-4ba3-a246-0112e483b343","name":"Obedient"},{"id":"17f7a1bf-a9ef-4183-b582-5a592c357360","name":"Opinionated"},{"id":"652ef7db-68ad-4d2b-8ce8-ed195700f6d6","name":"Outgoing"},{"id":"7d277c7e-c6df-4c03-972a-543e75237c49","name":"Patient"},{"id":"ca38ce30-7e8a-4f15-b43b-74d125f94c38","name":"People-Oriented"},{"id":"13ecfa31-9dc3-44d2-93ce-31c04ee9f424","name":"Playful"},{"id":"d763e486-90dd-411a-9c12-22c93dc34e75","name":"Powerful"},{"id":"86dd0643-8c94-4223-ab1c-4412fafc0088","name":"Protective"},{"id":"7ffb5e51-5f6d-4643-9a44-0f2f7ef68f82","name":"Proud"},{"id":"d714641b-8fb7-4606-bc97-7cd0f19e0c7b","name":"Quick"},{"id":"c1674472-960e-48a1-870a-7d15a9771c76","name":"Quiet"},{"id":"69d3a009-7982-4647-b040-b706e2147b1a","name":"Rational"},{"id":"dc49f076-ac42-484a-9f15-730f5001bcb0","name":"Receptive"},{"id":"b9f9ca95-f147-465c-b6d4-f6e5d1814b62","name":"Refined"},{"id":"aefa3bf9-d5cc-48d0-9d81-ff82de666d9b","name":"Reliable"},{"id":"0059f314-9b96-4950-91ab-594333990cbd","name":"Reserved"},{"id":"843ccade-8d85-4f68-a097-0e46e82d0e95","name":"Respectful"},{"id":"e063e209-cff3-4ab6-9be8-9692bc6318d1","name":"Responsible"},{"id":"3b7c7364-038c-44d1-8a74-ff8033495b43","name":"Responsive"},{"id":"3a2e7aa4-4972-4342-a72f-aa8c0d6a4a23","name":"Rugged"},{"id":"9907fe7e-4d5f-47b9-90f5-271aa0dedf85","name":"Self-assured"},{"id":"b67ef5bc-52c3-4c32-be53-c3f4a3da1cd4","name":"Self-confidence"},{"id":"233322b0-d21d-40c9-818b-16b4fde3e140","name":"Self-important"},{"id":"d6ad7b61-e494-44cf-8767-dcab1f26b59e","name":"Sensitive"},{"id":"834f27e8-a6c5-499c-9ae2-93e015d5fb79","name":"Sociable"},{"id":"90194c36-4ac0-4af9-aa75-0b9aecdfdc29","name":"Spirited"},{"id":"85c1e815-76ae-4e87-818c-c8592f6b18f8","name":"Spunky"},{"id":"36be1dd7-b00d-4f9a-bab1-d87be411ac4b","name":"Stable"},{"id":"428f6eee-2f06-4fc8-96c6-f8576b339cdf","name":"Steady"},{"id":"9c67d8bb-3956-4cab-895d-52609ce546a6","name":"Strong"},{"id":"1364dec3-50e8-47ae-92e2-df4c400edfb7","name":"Strong Willed"},{"id":"9eb0730d-ca97-43ef-bfb5-212fa809f24a","name":"Stubborn"},{"id":"6c0ca3c8-be22-41af-811d-3a4dc43889af","name":"Sturdy"},{"id":"01a052d8-907a-4750-8234-82f3171eceaf","name":"Suspicious"},{"id":"d6101b49-5a38-4052-849a-edacef07a4f1","name":"Sweet-Tempered"},{"id":"71a47e5e-9e42-4f53-92ad-6a3b262e3ac8","name":"Tenacious"},{"id":"dd190030-5a15-499e-860d-0d4a5f2bd888","name":"Territorial"},{"id":"253206f8-3933-4a9f-a2b8-8dbd1f497b8c","name":"Thoughtful"},{"id":"ca8c6035-6bfb-4214-a9fb-268111a6cc0c","name":"Tolerant"},{"id":"ebebedab-fb8d-485c-b618-88ae041a88bf","name":"Trainable"},{"id":"e1df11ed-8350-45f2-98d3-473c02f8037d","name":"Trusting"},{"id":"9cbcb0d2-4fcb-4c75-bbbe-cb23f2862398","name":"Unflappable"},{"id":"8ce18f38-0ea5-487c-870c-709347006ebf","name":"Trustworthy"},{"id":"c861f4b1-16cb-4663-bc2b-ae3dd93d5299","name":"Vigilant"},{"id":"fe59fe41-4c7e-4458-9c20-e81aedc2ea97","name":"Vocal"},{"id":"3a03d336-2e65-48e1-83fb-d5830e965ce3","name":"Watchful"},{"id":"06353f88-626a-430e-b7b0-b295defbb74d","name":"Wild"},{"id":"b3cd7200-49dd-4681-9ceb-b08079f048cc","name":"Willful"}].map(t => (
-                        <option key={t.id} value={t.name}>{t.name}</option>
-                        ))
-                    }
+                     [{"id":"98935a34-02b1-4bda-89f5-d9aceb9d60c1","name":"Active"},{"id":"59c6fb98-311f-407a-ba3d-8be6f5a99ff1","name":"Adaptable"},{"id":"5bfa0088-15b1-4427-bb55-d827703c38fc","name":"Alert"},{"id":"18cbd415-a88b-46fc-a2d6-23bd3008343d","name":"Adventurous"},{"id":"c496bc6d-fd50-4f98-800d-4f262a6d7c66","name":"Aggressive"},{"id":"02dcbc0e-9bf2-4af0-9ab6-997b5a1a570a","name":"Affectionate"},{"id":"cd9313ce-5a52-414a-a727-bc9f519b5986","name":"Agile"},{"id":"3a12d17a-01a0-43ba-b0de-1c2f9c6a3a73","name":"Aloof"},{"id":"791d7bd5-36a9-49b5-9dc0-e1ac9317b736","name":"Amiable"},{"id":"61b6608f-5dcc-411e-a0e0-40be13fe7201","name":"Assertive"},{"id":"c17db335-e857-4e17-9141-74c065922784","name":"Athletic"},{"id":"19cb48a9-a506-4478-9e7d-6622449b9bf1","name":"Attentive"},{"id":"a0a49e3d-30cf-4b7e-9a6e-db55b7b6d88c","name":"Benevolent"},{"id":"04086d19-6b85-4b85-9094-bd6cb769621d","name":"Boisterous"},{"id":"4f30d47b-b753-428f-9f8c-d869aa978bd0","name":"Bold"},{"id":"54b0e262-5172-4e88-9020-a262788f20a0","name":"Bossy"},{"id":"d51b6770-52cf-4fe5-b540-ecf2b65e99bc","name":"Brave"},{"id":"b2f88ef2-23d4-421b-9ffb-b480e7f40777","name":"Bright"},{"id":"59cc3c7d-9e20-463d-a656-162c54e7c7f5","name":"Bubbly"},{"id":"ed3bf342-4328-48f2-8b0d-58facfb0cf27","name":"Calm"},{"id":"cfc29c3c-a127-487a-a3e7-d54c38587c9f","name":"Charming"},{"id":"551b4aea-458b-47a1-ae3c-7fb59128653a","name":"Cat-like"},{"id":"7cbabb1f-1589-4782-9eb6-c75798296d56","name":"Cautious"},{"id":"d499be68-73c0-45cf-83d7-5b4ed641b642","name":"Cheerful"},{"id":"0c17efaf-bfb0-4015-b4c3-c74073cc56db","name":"Clever"},{"id":"aeff8ae1-6c28-447e-8f10-663d43248d1a","name":"Clownish"},{"id":"670cf85c-b954-41fe-be55-16161817b1a1","name":"Companionable"},{"id":"e597d01b-dcf6-47f0-a120-7d656e42a5f3","name":"Composed"},{"id":"85e1088e-e0f5-4fa3-82c5-ec7a1ddb5b51","name":"Confident"},{"id":"8b6bba32-7f37-4685-9f8d-377fe6d6a603","name":"Cooperative"},{"id":"3204ca77-7608-4fae-87ef-079b4fb27e85","name":"Courageous"},{"id":"3aadf9f1-d4a9-424b-be91-645b5582399b","name":"Cunning"},{"id":"305e2d19-473d-4154-8034-3e06563781a8","name":"Curious"},{"id":"37f0a50c-6161-4526-87d8-9a109d0c04ee","name":"Determined"},{"id":"50c175cf-365a-40bb-89fa-cf391eb7de44","name":"Devoted"},{"id":"3c56f54f-7884-41fd-9d22-fca10e107653","name":"Dignified"},{"id":"6f304ca7-9fcd-4dce-af2a-b30b00f89851","name":"Diligent"},{"id":"b45083bf-03f5-4c7d-b288-fb1dad9835ee","name":"Docile"},{"id":"34e5b133-2f24-4535-9ad4-4063acaadb19","name":"Dominant"},{"id":"116996b1-234a-4f49-b05b-8bbd72549f6f","name":"Dutiful"},{"id":"9ebfe348-202d-479e-be0d-11b4f388b279","name":"Eager"},{"id":"a3d3493d-d253-4a04-b596-a1af407b5606","name":"Easygoing"},{"id":"f854535e-0b91-46c0-b1d9-04b8ab41b77e","name":"Energetic"},{"id":"3906e49d-d54c-4bfb-8771-37676b797408","name":"Even Tempered"},{"id":"d4c7ef16-a29b-42c3-b8a1-76c793f7bca4","name":"Excitable"},{"id":"09c5f1f7-1436-43bd-9cfb-b6f216275399","name":"Extroverted"},{"id":"a6ae9b11-9eb6-4687-b668-29b59b3134dc","name":"Faithful"},{"id":"f0f95766-bd73-43f2-8549-6d273a157cbf","name":"Familial"},{"id":"8ade86c0-1031-494c-87f4-66756045bee9","name":"Fast"},{"id":"7007a1aa-b8db-4310-9b54-2b44b595c045","name":"Fearless"},{"id":"5bdab267-3554-4ee2-bfb9-978fb4ee2eb6","name":"Feisty"},{"id":"13ed7a43-0966-4eed-b6a4-6e3ba1cce8b3","name":"Fierce"},{"id":"73f1bc87-df3a-48d9-8435-09ab886f6970","name":"Friendly"},{"id":"ec54c49b-fb20-45c8-8c07-003aa95686b3","name":"Fun-loving"},{"id":"b06f13a4-fc38-4f58-90c8-1b18ea664835","name":"Gay"},{"id":"1fe30daf-4132-4758-a37b-fd5c83294792","name":"Generous"},{"id":"27e2a8f8-8ecb-4874-a88e-95fe15168449","name":"Gentle"},{"id":"98cf4d40-728c-4569-ae75-b0e873111c36","name":"Good-natured"},{"id":"f208e276-5493-4b38-a925-0031b24afcea","name":"Good-tempered"},{"id":"0c88569b-261f-4604-b78d-eed5f460789f","name":"Great-hearted"},{"id":"1dbb797d-8e82-4744-bc23-e01ceb61fd0a","name":"Happy"},{"id":"a1e94187-55e1-48c5-aa53-be416b121825","name":"Hard-working"},{"id":"e5f0e774-d956-4d25-8393-53d1fe2c8d49","name":"Hardworking"},{"id":"ed406246-63b3-4c46-b59a-f8ecd536d71f","name":"Hardy"},{"id":"190c4f91-9ac6-42ae-bb4d-fe2f904a0069","name":"Independent"},{"id":"70d31487-5c59-42e2-b83a-c33bdf021dcc","name":"Inquisitive"},{"id":"a987e74e-abba-475d-b175-bdd3166de563","name":"Intelligent"},{"id":"ddcb27f6-4d5a-4500-9de9-476a553d0b55","name":"Joyful"},{"id":"7b04d40a-9650-471a-b7ae-a3cdc79580ca","name":"Keen"},{"id":"de0c2ebe-e29e-4d4b-9953-ecb9cabbae0d","name":"Kind"},{"id":"159af565-306d-4c71-8b35-c4f5d49db7cc","name":"Lively"},{"id":"4cfc848f-c967-47b6-b9e3-4d99dfd32829","name":"Lovable"},{"id":"260f1156-b28b-4fee-92b0-0bffdf4fff67","name":"Loving"},{"id":"de01b6f6-ff71-432f-9184-f04ffff0d3fc","name":"Loyal"},{"id":"a85f59f6-85ab-4b7e-a382-1283a2535da3","name":"Merry"},{"id":"a9899fb8-db10-4246-bbb3-2b49692cfc29","name":"Mischievous"},{"id":"8fe6e9ef-d23d-4cc6-9dc1-78952ed73617","name":"Obedient"},{"id":"d7884d0b-c9a9-4de8-9698-a46994dddeba","name":"Opinionated"},{"id":"bcb6b0b9-11f8-435b-8b69-b7b9c6b5d75a","name":"Outgoing"},{"id":"716cb095-2565-45bc-aff8-e0b9b1657d5b","name":"Patient"},{"id":"d472ae97-dcbe-4f9e-b324-77d410a22344","name":"People-Oriented"},{"id":"6cfc1b75-9ee1-46b9-899f-e3b86d5454cc","name":"Playful"},{"id":"1e223773-f679-421e-8e2c-c0e32c0835ca","name":"Powerful"},{"id":"2ae91ed3-5ad5-453f-9043-fd383c5442a3","name":"Protective"},{"id":"27c62af3-864c-451c-9b80-a39ffe981129","name":"Proud"},{"id":"9ad8531e-846c-44e6-bcda-c5f141855dc6","name":"Quick"},{"id":"7e4adcff-9e6c-454e-bb18-6ce559a5d4f0","name":"Quiet"},{"id":"01a75c04-971a-4c3d-bba0-b9e6a79bb47c","name":"Rational"},{"id":"f08672c2-652e-4fdc-83fc-c7490efe7df7","name":"Receptive"},{"id":"80dc0b65-e76a-40d2-a4f3-f327fb4f403a","name":"Refined"},{"id":"8cc31374-15bc-47ca-9bf9-98f521b9bfee","name":"Reliable"},{"id":"904f4bb9-d019-4648-b14b-23c5adefd71b","name":"Reserved"},{"id":"07af7642-1c30-40c8-aa53-c8a5777a1176","name":"Respectful"},{"id":"7a21fa74-0653-4af0-9f76-bc600469b704","name":"Responsible"},{"id":"284488bf-0506-4b13-bb6f-f5f6f13b5b72","name":"Responsive"},{"id":"8293f069-aa53-4fd9-841d-ff68e1b6ae68","name":"Rugged"},{"id":"008a5df9-bae1-40c3-a208-febb2caa58fa","name":"Self-assured"},{"id":"c5e10705-2f73-49c9-851e-318e0901b507","name":"Self-confidence"},{"id":"81939ccd-a86b-4448-a0ed-2f08dff56999","name":"Self-important"},{"id":"5c75b657-d0bc-420c-ac9e-a1f40c51263a","name":"Sensitive"},{"id":"4690662b-1bb7-451a-beb6-b0d85ec288da","name":"Sociable"},{"id":"0abc8556-32c8-46d4-a6f5-a95d14df7d3a","name":"Spirited"},{"id":"f3951985-180e-4f3f-aa03-eb9099b2204b","name":"Spunky"},{"id":"dc517ac2-c2a8-4be9-971f-f654a294e86e","name":"Stable"},{"id":"f5bd2596-6053-469f-b849-6a4f1629c394","name":"Steady"},{"id":"6acb909f-e2de-4202-9c9f-66003e7dae11","name":"Strong"},{"id":"683cd8e0-47cb-47eb-adef-33df6f75a345","name":"Strong Willed"},{"id":"e18d7be8-4fa9-4136-9eeb-c9a2ab934d05","name":"Stubborn"},{"id":"aa43d25c-f639-4ba4-97b4-152516a95c12","name":"Sturdy"},{"id":"4d3cf14e-f2af-48f5-b3a4-fd0e2a8e2b31","name":"Suspicious"},{"id":"bb6d0fbb-3e61-4d43-8cd9-819a49604167","name":"Sweet-Tempered"},{"id":"dacefa17-f771-420f-832b-39d5aa8954d8","name":"Tenacious"},{"id":"eeff87fd-5ca9-4c58-a470-c138592970b9","name":"Territorial"},{"id":"657766d3-c8b4-4795-b255-9f739a4323ef","name":"Thoughtful"},{"id":"c876f323-3cc2-4cd1-b468-be04348ce9da","name":"Tolerant"},{"id":"bbbe9125-967c-4983-a691-cc55c7057504","name":"Trainable"},{"id":"d587bfe7-7ef5-4778-bac5-59c6e3cac93f","name":"Trusting"},{"id":"ef4b8276-4fa0-4b33-93ad-384e542597ea","name":"Trustworthy"},{"id":"a8d38518-e7ad-409c-809a-0411732a3a80","name":"Unflappable"},{"id":"7bf51519-d59c-4597-b01f-7d028d914e6f","name":"Vigilant"}].map(t => (
+                                <option key={t.id} value={t.name}>{t.name}</option>
+                                ))
+                            }
                     </select>
-                <div>
+                </div>
                 <div>
                     <select onChange={handleFilterCreated} name="" id="">
                         <option value="All">All Dogs</option>
                         <option value="created">Created Dogs</option>
                         <option value="api">Api Dogs</option>
                     </select>
+                <div>
                 </div>
                 </div>
             </div>
             <div>
                     <label htmlFor="">ABC</label>
                     <select value={order} onChange={handleSort} name="orderAlf" id="">
-                        <option value="">Select</option>
+                        <option value="">-</option>
                         <option value="asc">A-Z</option>
                         <option value="desc">Z-A</option>
                     </select>
+                    <label htmlFor="">Weight</label>
+                    <select value={order} onChange={handleWeight} name="orderAlf" id="">
+                        <option value="">-</option>
+                        <option value="heavy">Heavy</option>
+                        <option value="soft">Soft</option>
+                    </select>
+                    
                 <div>
                 </div>
             </div>
-         <button onClick={handleOnClick}>Buscar</button>
-         <button onClick={() => history.push('/main')}>Reset filters</button>
+         <button onClick={refreshPage}>Reset filters</button>
         </div>
     );
 };

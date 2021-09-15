@@ -1,11 +1,10 @@
 .nav{
-    background-color: transparent;
+    background-color: yellow;
     padding: 10px;
     display: flex;
     justify-content: flex-start;
-    margin-top: 10px;
-    margin-bottom: 10px;
     height: 35px;
+    align-items: center;
 }
 
 .btn {
@@ -15,7 +14,8 @@
     color: white;
     border: white;
     align-self: flex-end;
-    border-radius: 50px;
+    border-radius: 3px;
+    margin-left: 5px;
     position:relative;
     top: 8px;
     right: 8px;
@@ -30,6 +30,7 @@
 .search {
     position: relative;
     display: flex;
+    margin-top: 50px;
     align-items: center;
 }
 

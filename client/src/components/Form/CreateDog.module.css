@@ -1,0 +1,50 @@
+.cnt{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.card {
+    width: 160px;
+    height: 300px;
+    border-radius: 15px;
+    padding: 1.5rem;
+    background: white;
+    position: relative;
+    display: flex;
+    margin: 10px 10px 10px 10px;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    transition: 0.4s ease-out;
+    box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);
+}
+
+  .button {
+    margin-left: auto;
+    text-decoration: none;
+    padding: 1px;
+    outline: none;
+    border-radius: 3px;
+    background: white;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.4s ease;
+  }
+  .button:hover {
+    background: dodgerblue;
+    color: white;
+  }
+
+  .multi_select_box{
+    width: 400px;
+    margin: 80px auto
+  }
+
+  .multi_select_box select {
+    width: 100%;
+    
+  }
+  
+
+  

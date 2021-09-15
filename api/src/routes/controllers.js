@@ -55,13 +55,23 @@ const getDogs = async function (req, res, next) {
             image: image.url,
             life_span
         }))
-        const localDogs = await Dog.findAll({
+        let localDogs = await Dog.findAll({
             include: [{
                 model: Temperament,
-                attributes: ['id', 'name'],
+                attributes: ['name'],
             },],
             attributes: ['id', 'name', 'height', 'weight', 'image', 'life_span']
         })
+        localDogs = await  localDogs.map(({id, name, height, weight, temperaments, image, life_span}) => ({
+            id,
+            name,
+            height,
+            weight,
+            temperament: temperaments[0].name,
+            image,
+            life_span
+        }))
+        console.log(localDogs)
        return res.status(200).json([...localDogs, ...apiDogs])
     }catch(e){
         next(e)
