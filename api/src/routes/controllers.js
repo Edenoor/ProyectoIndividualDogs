@@ -71,7 +71,7 @@ const getDogs = async function (req, res, next) {
             image,
             life_span
         }))
-        console.log(localDogs)
+     
        return res.status(200).json([...localDogs, ...apiDogs])
     }catch(e){
         next(e)
@@ -83,6 +83,7 @@ const getDogByName = async function (req, res, next) {
     const {temperaments} = req.query
     try{
         let apiDogs = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
+      
         apiDogs = apiDogs.map(({id, name, height, weight, temperament, image, life_span}) => ({
             id,
             name,
@@ -111,18 +112,18 @@ const getDogByName = async function (req, res, next) {
         const allDogs = [...localDogs, ...apiDogs]
         let dogs = allDogs
         if(name && temperaments) {
-            console.log('HEREEEE', name, temperaments)
+          
             dogs = await dogs.filter(e => e.name.toLowerCase().includes(name.toLowerCase()) && e.temperament.toLowerCase().includes(temperaments.toLowerCase()))
             if(dogs.length > 0) {
                 return res.status(200).json(dogs)
             }
         }
             if(name) {
-                console.log('HEREEEE', name, temperaments)
+                
                 dogs = await dogs.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
             }
                 if(temperaments) {
-                    console.log('HEREEEE', name, temperaments)
+                  
                     dogs = await dogs.filter(e => e.temperament.toLowerCase().includes(temperaments.toLowerCase()))   
             }
         if(dogs.length > 0) {
@@ -148,7 +149,7 @@ const createDog = async function (req, res, next) {
             life_span
         });
         await newDog.setTemperaments(temperaments)
-        console.log('aholaaa:',temperaments)
+       
         
         return res.status(201).json(newDog)
     }catch(e){
@@ -222,7 +223,7 @@ const getDogById = async function (req, res, next) {
         //     })
         //     const allDogs = [...localDogs, ...apiDogs]
         //     const allDogsId = await allDogs.find((e) => e.id===parseInt(id))
-        //     console.log(id)
+        //   
         //    return res.status(200).json(allDogsId)
 
 }
@@ -230,12 +231,12 @@ const getDogById = async function (req, res, next) {
 const getTemperaments = async function (req, res, next) {
     try{
         let apiTemperaments = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data
-
-        apiTemperaments = apiTemperaments.map(t => t.temperament).join().split(',')
-        apiTemperaments = apiTemperaments.map(e => e.trim())
-        apiTemperaments = [...new Set(apiTemperaments)].sort()
+        
+        apiTemperaments = await apiTemperaments.map(t => t.temperament).join().split(',')
+        apiTemperaments = await apiTemperaments.map(e => e.trim())
+        apiTemperaments = await [...new Set(apiTemperaments)].sort()
         apiTemperaments.shift()
-        // apiTemperaments = await apiTemperaments.map(e => ({ name: e}))
+
         let temperamentos = await apiTemperaments.forEach(e => {
             Temperament.findOrCreate({
             where: {
@@ -258,7 +259,7 @@ const getDbTemperaments = async function (req, res, next) {
         let allTemperaments = await Temperament.findAll()
         allTemperaments = await allTemperaments.map(({id, name}) => ({id, name}))
         res.status(200).json(allTemperaments)
-        console.log(allTemperaments)
+      
         return allTemperaments
     }catch(e) {
         next(e)
