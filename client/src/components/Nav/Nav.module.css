@@ -1,10 +1,13 @@
 .nav{
-    background-color: yellow;
+    background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1)), url(https://st3.depositphotos.com/3687485/13673/v/600/depositphotos_136739692-stock-illustration-vector-illustration-of-different-dogs.jpg);
     padding: 10px;
     display: flex;
     justify-content: flex-start;
     height: 35px;
     align-items: center;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+
 }
 
 .btn {

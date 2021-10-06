@@ -34,7 +34,8 @@
   .wrapper {
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: center;
+
   }
   
   .card {
@@ -52,7 +53,7 @@
     box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);
   }
   .card:hover {
-    transform: translateY(20px);
+    transform: translateY(8px);
   }
   .card:hover:before {
     opacity: 1;
@@ -94,10 +95,12 @@
     transition: 0.5s;
   }
   .h1 {
+    color: blanchedalmond;
     font-size: 15px;
     margin: 0px;
   }
   .p {
+    color: blanchedalmond;
     letter-spacing: 1px;
     font-size: 10px;
     margin-top: 8px;

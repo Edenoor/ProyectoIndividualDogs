@@ -17,8 +17,7 @@ export const getAllDogs = name => dispatch => {
         if(name) {
              return axios.get(`/dogs?name=${name}`)
              .then(res => dispatch({type: GET_ALL_DOGS, payload: res.data}))
-}
-
+            }
         return axios.get('/')
         .then(res => dispatch({type: GET_ALL_DOGS, payload: res.data}))
     }catch(e) {

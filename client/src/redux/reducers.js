@@ -16,6 +16,7 @@ const rootReducer = (state = initialState, action) => {
                 allDogs: action.payload
             };
         case GET_DOG:
+            console.log("SHOW ME",  action.payload)
             return{
                 ...state,
                 dog: action.payload

@@ -19,7 +19,7 @@
     box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);
   }
   .card:hover {
-    transform: translateY(20px);
+    transform: translateY(05px);
   }
   .card:hover:before {
     opacity: 1;

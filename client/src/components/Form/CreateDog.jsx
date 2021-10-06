@@ -8,11 +8,11 @@ export const CreateDog =  ({ dog }) => {
     const temperaments = useSelector(state => state.temperaments)
 
     const [values, setValues] = useState({
-        name: '',
-        weight: '',
-        height: '',
-        life_span: '',
-        image: '',
+        name: null,
+        weight: null,
+        height: null,
+        life_span: null,
+        image: null,
         temperaments: []
     })
 
@@ -38,11 +38,11 @@ export const CreateDog =  ({ dog }) => {
         console.log('Values:', values)
         dispatch(createDog(values));
         setValues({
-            name: '',
-            weight: '',
-            height: '',
-            life_span: '',
-            image: '',
+            name: null,
+            weight: null,
+            height: null,
+            life_span: null,
+            image: null,
             temperaments: []
         });
         alert('Dog created successfully')
@@ -54,15 +54,15 @@ export const CreateDog =  ({ dog }) => {
             <div className={Styles.card}>
 
             <label >Name</label>
-            <input name='name' onChange={handleOnChange} type="text" value={values.name} placeholder="Waiting Dog Name" />
+            <input name='name' onChange={handleOnChange} type="text" value={values.name} placeholder="Waiting Dog Name" required/>
             <label htmlFor="">Weight</label>
-            <input name='weight' onChange={handleOnChange} type="text" value={values.weight} placeholder="1 - 10" />
+            <input name='weight' onChange={handleOnChange} type="text" value={values.weight} placeholder="1 - 10" required/>
             <label htmlFor="">Height</label>
-            <input name='height' onChange={handleOnChange} type="text" value={values.height} placeholder="20 - 30"/>
+            <input name='height' onChange={handleOnChange} type="text" value={values.height} placeholder="20 - 30"required/>
             <label htmlFor="">Life_Span</label>
-            <input name='life_span' onChange={handleOnChange} type="text" value={values.life_span} placeholder="10 - 12 years" />
+            <input name='life_span' onChange={handleOnChange} type="text" value={values.life_span} placeholder="10 - 12 years" required/>
             <label htmlFor="">Image</label>
-            <input name='image' onChange={handleOnChange} type="text" value={values.image} placeholder="Paste Url" />
+            <input name='image' onChange={handleOnChange} type="text" value={values.image} placeholder="Paste Url" required/>
             <div>
 
             <div>

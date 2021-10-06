@@ -2,11 +2,15 @@
 
     justify-content: space-evenly;
     align-items:stretch;
-    background-color: transparent
+    background-color: transparent;  
+    margin-right: 15px;
+    margin-left: 15px;
+
 }
 
 .cont {
-    display:inline;
+    display: inline;
+
 }
 
 .pag{

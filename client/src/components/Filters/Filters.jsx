@@ -12,24 +12,12 @@ const Filters = () => {
     const dispatch = useDispatch()
     const temperaments = useSelector(state => state.temperaments)
 
-    
-    
-  
 
     const [values, setValues] = useState({
         temperaments: '',
     })
     
     const [order, setOrder] = useState('')
-
-    // const handleOnChange = ({target: {name, value}}) => setValues({
-    //     ...values,
-    //     [name]: value   
-    // }) 
-
-    // const handleOnClick = () => {
-    //     dispatch(filterDogsByTemperament({...values, name, order}));
-    // }
 
     const handleFilterTemperament = (e) => {
     dispatch(filterDogsByTemperament(e.target.value))
@@ -52,10 +40,8 @@ const Filters = () => {
       }
     return(
         <div className={Styles.container}>
-            <div className={Styles.containers} >
-                <div>
 
-                    <label htmlFor="">Temperament</label>
+                    <label className={Styles.text} htmlFor="">Temperament</label>
                     <select value={values.temperaments} onChange={handleFilterTemperament} name="temperaments" id="temperaments">
                         <option value="">-</option>
                         {
@@ -64,34 +50,31 @@ const Filters = () => {
                                 ))
                             }
                     </select>
-                </div>
-                <div>
+               
+              
+                    <label className={Styles.text} htmlFor="">Created by</label>
                     <select onChange={handleFilterCreated} name="" id="">
                         <option value="All">All Dogs</option>
                         <option value="created">Created Dogs</option>
                         <option value="api">Api Dogs</option>
                     </select>
-                <div>
-                </div>
-                </div>
-            </div>
-            <div>
-                    <label htmlFor="">ABC</label>
+            
+                    <label className={Styles.text} htmlFor="">ABC</label>
                     <select value={order} onChange={handleSort} name="orderAlf" id="">
                         <option value="">-</option>
                         <option value="asc">A-Z</option>
                         <option value="desc">Z-A</option>
                     </select>
-                    <label htmlFor="">Weight</label>
+
+                    <label className={Styles.text} htmlFor="">Weight</label>
                     <select value={order} onChange={handleWeight} name="orderAlf" id="">
                         <option value="">-</option>
                         <option value="heavy">Heavy</option>
                         <option value="soft">Soft</option>
                     </select>
                     
-                <div>
-                </div>
-            </div>
+                
+           
          <button onClick={refreshPage}>Reset filters</button>
         </div>
     );

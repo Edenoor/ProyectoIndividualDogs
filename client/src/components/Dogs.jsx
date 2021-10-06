@@ -7,6 +7,10 @@ import DogCard from './DogCard'
 import Pagination from "./Pagination";
 import styles from './Dog.module.css'
 
+import { Carousel } from 'react-responsive-carousel';
+
+
+
 
 const Dogs = () => {
     const query = new URLSearchParams(useLocation().search.slice(1));
@@ -29,9 +33,11 @@ const Dogs = () => {
                 <div className={styles.cont}>
                     <h4 className={styles.pag}><Pagination dogs={dogs}/></h4>
                     <div className={styles.one}>
-                    {
-                        dogs.slice(from, from + 8).map(dog => <DogCard key={dog.id} dog={dog}/>)
-                    }
+           
+                            {
+                            dogs.slice(from, from + 8).map(dog => <DogCard key={dog.id} dog={dog}/>)
+                            }
+
                     </div>
                     <h4><Pagination dogs={dogs}/></h4>
                 </div>
