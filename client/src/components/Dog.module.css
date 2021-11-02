@@ -10,7 +10,9 @@
 
 .cont {
     display: inline;
-
+    position: relative;
+    align-items: center;
+    justify-content: center;
 }
 
 .pag{

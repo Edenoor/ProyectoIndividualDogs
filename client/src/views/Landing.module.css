@@ -1,10 +1,27 @@
-body{
-    background: black;
-
+/* body {
+  background: black;
+} */
+.container {
+  height: 800px;
+  width: 1700px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  background-image: url("https://images.pexels.com/photos/3576792/pexels-photo-3576792.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+  background-size: cover;
 }
-.container{
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
+
+.button {
+  background-color: rgba(245, 245, 245, 0.541);
+  border-radius: 5px;
+  padding: auto;
+  font-size: 50px;
+  box-shadow: inset;
+}
+
+button:hover {
+  border: none;
+  background-color: transparent;
+  color: blanchedalmond;
 }
